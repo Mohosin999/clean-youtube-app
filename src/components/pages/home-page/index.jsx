@@ -88,7 +88,7 @@ const HomePage = () => {
                   lineHeight: 1.2,
                 }}
               >
-                Organize YouTube <br /> Playlists Like a Pro
+                Enjoy YouTube <br /> Playlists Without Ads
               </Typography>
 
               <Typography
