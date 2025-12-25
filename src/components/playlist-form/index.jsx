@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Button from "@mui/material/Button";

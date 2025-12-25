@@ -15,59 +15,61 @@ const Recents = () => {
       sx={{
         minHeight: "100vh",
         position: "relative",
-        backgroundImage: "url(/bg.jpg)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
+        background: `
+          radial-gradient(circle at 20% 20%, rgba(255,152,0,0.08), transparent 40%),
+          radial-gradient(circle at 80% 0%, rgba(30,136,229,0.08), transparent 40%),
+          linear-gradient(180deg, #0b0b0f 0%, #0e0e14 100%)
+        `,
+        overflow: "hidden",
+        color: "#fff",
       }}
     >
-      {/* Overlay */}
+      {/* Subtle noise overlay */}
       <Box
         sx={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0,0,0,0.9)", // dark overlay
-          zIndex: 1,
+          inset: 0,
+          backgroundImage: "url('/noise.png')",
+          opacity: 0.03,
+          pointerEvents: "none",
         }}
       />
 
-      {/* Content */}
       <Container
         maxWidth="lg"
         sx={{
-          pt: {
-            xs: 14,
-            md: 16,
-          },
+          pt: { xs: 14, md: 16 },
           pb: 8,
-          minHeight: "100%",
           position: "relative",
-          zIndex: 2, // above overlay
+          zIndex: 2,
         }}
       >
         {itemArray.length > 0 ? (
-          <Grid container alignItems="stretch" spacing={2}>
+          <Grid container spacing={3}>
             {itemArray.map((item) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                mb={2}
-                key={item.playlistId}
-              >
-                <PlaylistCardItem
-                  playlistId={item.playlistId}
-                  playlistThumbnail={item.playlistItems[0]?.thumbnails}
-                  playlistTitle={item.playlistTitle}
-                  channelTitle={item.channelTitle}
-                  playlistItems={item.playlistItems}
-                  path={"recents"}
-                />
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item.playlistId}>
+                <Box
+                  sx={{
+                    borderRadius: 3,
+                    overflow: "hidden",
+                    background: "rgba(255,255,255,0.03)",
+                    backdropFilter: "blur(12px)",
+                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                      boxShadow: "0 12px 24px rgba(0,0,0,0.4)",
+                    },
+                  }}
+                >
+                  <PlaylistCardItem
+                    playlistId={item.playlistId}
+                    playlistThumbnail={item.playlistItems[0]?.thumbnails}
+                    playlistTitle={item.playlistTitle}
+                    channelTitle={item.channelTitle}
+                    playlistItems={item.playlistItems}
+                    path={"recents"}
+                  />
+                </Box>
               </Grid>
             ))}
           </Grid>
@@ -80,14 +82,26 @@ const Recents = () => {
               justifyContent: "center",
               minHeight: "calc(100vh - 96px)",
               textAlign: "center",
-              color: "#fff",
+              px: 2,
             }}
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{ fontWeight: 700, mb: 2 }}
+            >
               📄 Empty Recent Page
             </Typography>
-            <Typography variant="body1" sx={{ color: "#B4B2B0" }}>
-              You should visit a playlist first to see them here!
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#B4B2B0",
+                maxWidth: 400,
+                lineHeight: 1.6,
+              }}
+            >
+              You should visit a playlist first to see them here! Once you do,
+              your recent playlists will appear beautifully in this section.
             </Typography>
           </Box>
         )}

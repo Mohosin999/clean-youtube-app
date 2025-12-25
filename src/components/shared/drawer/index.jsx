@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { List, Drawer, IconButton } from "@mui/material";
 import { Home, Favorite, AllOut, Add } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CustomButton from "../custom-button";
+import { useNavigate, useLocation } from "react-router-dom";
 
-/**
- * DrawerComp Component
- * A drawer menu component with navigation buttons for "Favorites", "Recents",
- * and "Add Playlist". The drawer opens from the right side.
- *
- * @param {Function} handleClickOpen - A function to handle opening the "Add Playlist" dialog.
- */
 const DrawerComp = ({ handleClickOpen }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation(); // current route
 
-  /**
-   * Handles button click to close the drawer.
-   */
-  const handleButtonClick = () => {
+  const buttons = [
+    { text: "Home", icon: Home, path: "/" },
+    { text: "Favorites", icon: Favorite, path: "/favorites" },
+    { text: "Recents", icon: AllOut, path: "/recents" },
+  ];
+
+  const handleButtonClick = (path) => {
     setOpenDrawer(false);
+    if (path) navigate(path);
   };
 
   return (
@@ -27,57 +27,47 @@ const DrawerComp = ({ handleClickOpen }) => {
       <Drawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
-        anchor={"right"}
-      >
-        <List
-          sx={{
+        anchor="right"
+        PaperProps={{
+          sx: {
+            width: 250,
             background: "linear-gradient(90deg, #141E30, #243B55)",
-            height: "100%",
-          }}
-        >
+            color: "#fff",
+            padding: 2,
+          },
+        }}
+      >
+        <List>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: 14,
-              margin: "24px 24px 0 10px",
+              marginTop: 24,
             }}
           >
-            {/* Navigation button to Home */}
+            {buttons.map(({ text, icon, path }) => (
+              <CustomButton
+                key={text}
+                icon={icon}
+                text={text}
+                onClick={() => handleButtonClick(path)}
+                variant={location.pathname === path ? "outline" : "ghost"}
+              />
+            ))}
             <CustomButton
-              to="/"
-              icon={Home}
-              text="Home"
-              onClick={handleButtonClick}
-            />
-            {/* Navigation button to Favorites */}
-            <CustomButton
-              to="/favorites"
-              icon={Favorite}
-              text="Favorites"
-              onClick={handleButtonClick}
-            />
-            {/* Navigation button to Recents */}
-            <CustomButton
-              to="/recents"
-              icon={AllOut}
-              text="Recents"
-              onClick={handleButtonClick}
-            />
-            {/* Button to add a new playlist */}
-            <CustomButton
-              onClick={() => {
-                handleClickOpen();
-                handleButtonClick();
-              }}
               icon={Add}
               text="Add Playlist"
+              variant="primary"
+              onClick={() => {
+                handleClickOpen();
+                setOpenDrawer(false);
+              }}
             />
           </div>
         </List>
       </Drawer>
 
-      {/* Icon button to toggle the drawer */}
       <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
         <MenuIcon sx={{ color: "#efefef" }} />
       </IconButton>
@@ -85,7 +75,6 @@ const DrawerComp = ({ handleClickOpen }) => {
   );
 };
 
-// Prop validation using PropTypes
 DrawerComp.propTypes = {
   handleClickOpen: PropTypes.func.isRequired,
 };
