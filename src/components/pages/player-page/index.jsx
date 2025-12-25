@@ -1,130 +1,216 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useStoreState } from "easy-peasy";
-import { Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  InputAdornment,
+} from "@mui/material";
 import { Container } from "@mui/system";
 import { useParams } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+
 import VideoCardItem from "../../video-card-item";
 import GoToTopButton from "../../shared/go-to-top-button";
 
-/**
- * PlayerPage Component
- * Displays a list of videos within a playlist and provides search
- * functionality.
- */
 const PlayerPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Get the playlist ID from URL parameters
   const { playlistId } = useParams();
-  // Access playlist data from the store
   const { data } = useStoreState((state) => state.playlists);
-  // Retrieve the current playlist using the ID
   const current = data[playlistId];
 
-  // Responsive Design
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // If the playlist is not found, show a fallback message
   if (!current) {
     return (
       <Container
         maxWidth="lg"
-        sx={{ paddingTop: isSmallScreen ? 10 : 12, textAlign: "center" }}
+        sx={{
+          pt: isSmallScreen ? 12 : 14,
+          textAlign: "center",
+        }}
       >
-        <h2>Playlist not found!</h2>
+        <Typography variant="h5">Playlist not found 😕</Typography>
       </Container>
     );
   }
 
-  // Array of videos in the current playlist
   const videoItemArray = current.playlistItems;
 
-  // Filter the video list based on the search query
-  const filteredPlaylistItem = videoItemArray.filter((playlistItem) =>
-    playlistItem.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPlaylistItem = videoItemArray.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  console.log("night owl", filteredPlaylistItem);
-  // Handle search input changes
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
   return (
-    <div>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        paddingBottom: "60px",
+        color: "#fff",
+        background: `
+          radial-gradient(circle at 20% 20%, rgba(255,152,0,0.12), transparent 40%),
+          radial-gradient(circle at 80% 0%, rgba(30,136,229,0.12), transparent 40%),
+          linear-gradient(180deg, #0b0b0f 0%, #0e0e14 100%)
+        `,
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      {/* Optional subtle noise overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/noise.png')",
+          opacity: 0.04,
+          pointerEvents: "none",
+        }}
+      />
+
       <Container
         maxWidth="lg"
-        sx={{ paddingTop: isSmallScreen ? 10 : 12, minHeight: "100vh" }}
+        sx={{ pt: isSmallScreen ? 14 : 16, position: "relative", zIndex: 1 }}
       >
-        {/* Search Bar */}
-        <TextField
-          placeholder="Search targeted videos"
-          variant="outlined"
-          size="small"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          sx={{
-            marginBottom: 3,
-            width: "100%",
-            backgroundColor: "#333", // Darker background
-            borderRadius: "12px",
-            "& .MuiOutlinedInput-root": {
-              color: "#fff", // Text color for dark mode
-              borderRadius: "12px",
-              "& fieldset": {
-                borderColor: "#555", // Border color
-              },
-              "&:hover fieldset": {
-                borderColor: "#777", // Lighter border on hover
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#1e88e5", // Focus color
-              },
-            },
-            "& .MuiInputBase-input": {
-              color: "#fff", // Text color
-            },
-            "& .MuiInputLabel-root": {
-              color: "#aaa", // Placeholder color
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#1e88e5", // Placeholder focus color
-            },
-          }}
-        />
-
-        {filteredPlaylistItem.length > 0 ? (
-          <Grid container alignItems="stretch" spacing={2}>
-            {filteredPlaylistItem.map((item) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={item.contentDetails.videoId}
+        {/* ================= HEADER + SEARCH + 2 VIDEOS ================= */}
+        <Grid
+          container
+          spacing={4}
+          alignItems="flex-start"
+          direction={isSmallScreen ? "column" : "row"}
+        >
+          {/* LEFT SIDE: Title + Info */}
+          <Grid item xs={12} md={4}>
+            <Box>
+              <Typography
+                variant={isSmallScreen ? "h5" : "h4"}
+                fontWeight={700}
+                gutterBottom
               >
-                <VideoCardItem
-                  title={item.title}
-                  thumbnails={item.thumbnails}
-                  videoId={item.contentDetails.videoId}
-                  videos={filteredPlaylistItem.map(
-                    (video) => video.contentDetails.videoId
-                  )}
-                  playlistId={playlistId}
+                {current.playlistTitle}
+              </Typography>
+
+              <Typography variant="body2" sx={{ opacity: 0.7, mb: 4 }}>
+                {videoItemArray.length} videos • Enjoy Ads-free video
+              </Typography>
+
+              {/* SEARCH BAR */}
+              <Box
+                sx={{
+                  p: 2.2,
+                  borderRadius: "18px",
+                  background: "rgba(255,255,255,0.04)",
+                  backdropFilter: "blur(16px)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                <TextField
+                  fullWidth
+                  placeholder="Search videos in this playlist"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: "#ff9800" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      borderRadius: "999px",
+                      height: 46,
+                      backgroundColor: "rgba(0,0,0,0.35)",
+                      "& fieldset": {
+                        borderColor: "transparent",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "rgba(255,255,255,0.12)",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#ff9800",
+                        boxShadow: "0 0 0 2px rgba(255,152,0,0.25)",
+                      },
+                    },
+                    "& input::placeholder": {
+                      color: "#aaa",
+                      fontSize: "0.9rem",
+                    },
+                  }}
                 />
-              </Grid>
-            ))}
+              </Box>
+            </Box>
           </Grid>
-        ) : (
-          <h3 style={{ textAlign: "center" }}>No videos found!</h3>
+
+          {/* RIGHT SIDE: First 2 videos */}
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={2}>
+              {filteredPlaylistItem.slice(0, 2).map((item) => (
+                <Grid item xs={12} sm={6} key={item.contentDetails.videoId}>
+                  <VideoCardItem
+                    title={item.title}
+                    thumbnails={item.thumbnails}
+                    videoId={item.contentDetails.videoId}
+                    videos={filteredPlaylistItem.map(
+                      (video) => video.contentDetails.videoId
+                    )}
+                    playlistId={playlistId}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* ================= REMAINING VIDEOS ================= */}
+        {filteredPlaylistItem.length > 2 ? (
+          <Box mt={6}>
+            <Grid container spacing={3}>
+              {filteredPlaylistItem.slice(2).map((item) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  key={item.contentDetails.videoId}
+                >
+                  <VideoCardItem
+                    title={item.title}
+                    thumbnails={item.thumbnails}
+                    videoId={item.contentDetails.videoId}
+                    videos={filteredPlaylistItem.map(
+                      (video) => video.contentDetails.videoId
+                    )}
+                    playlistId={playlistId}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        ) : null}
+
+        {filteredPlaylistItem.length === 0 && (
+          <Box textAlign="center" py={10}>
+            <Typography variant="h6" gutterBottom>
+              No matching videos found 🔍
+            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+              Try a different keyword
+            </Typography>
+          </Box>
         )}
       </Container>
 
       {/* Go to Top Button */}
       <GoToTopButton />
-    </div>
+    </Box>
   );
 };
 

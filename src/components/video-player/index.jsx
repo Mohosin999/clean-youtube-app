@@ -1,127 +1,168 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useStoreState } from "easy-peasy";
 import YouTube from "react-youtube";
-import { useLocation } from "react-router-dom";
-import { Container, Box, useMediaQuery, useTheme } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Box,
+  useMediaQuery,
+  useTheme,
+  Typography,
+  Grid,
+  Button,
+} from "@mui/material";
 import { ArrowBack, ArrowForward, Close } from "@mui/icons-material";
 import CustomIconButton from "../shared/custom-icon-button";
 
 const VideoPlayer = () => {
-  /**
-   * Scroll to top when component is mounted
-   * It is done because when goes to this page, it always focus on top
-   */
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const { data } = useStoreState((state) => state.playlists);
-
   const location = useLocation();
   const videoId = new URLSearchParams(location.search).get("videoId");
-
-  // Extract playlistId and index from the URL's path
   const playlistId = location.pathname.split("/")[2];
   const index = location.pathname.split("/")[3];
-
-  const playlistItems = data[playlistId].playlistItems;
+  const playlistItems = data[playlistId]?.playlistItems || [];
   const lastItem = playlistItems.length - 1;
 
-  // Logic for previous button: calculate the previous video's index
   const prevIndex = parseInt(index) - 1;
   const prevItem = playlistItems[prevIndex];
   const prevVideoId = prevItem ? prevItem.contentDetails.videoId : "";
 
-  // Logic for next button: calculate the next video's index
   const nextIndex = parseInt(index) + 1;
   const nextItem = playlistItems[nextIndex];
   const nextVideoId = nextItem ? nextItem.contentDetails.videoId : "";
 
-  // Responsive design
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // Set options for YouTube player, including autoplay and fullscreen
   const opts = {
     playerVars: {
       autoplay: 1,
       fullscreen: 1,
     },
-    // height: isSmallScreen ? "200" : "500",
     height: "100%",
     width: "100%",
   };
 
-  // Handle the video player when it's ready to play
   const onPlayerReady = (event) => {
     event.target.playVideo();
   };
 
   return (
-    <Container maxWidth="lg" sx={{ pt: 10, mb: 5, minHeight: "100vh" }}>
-      <Box
-        sx={{
-          position: "relative",
-          paddingBottom: isSmallScreen ? "56.25%" : "0",
-          height: isSmallScreen ? "0" : "500px",
-          borderRadius: "8px",
-          overflow: "hidden",
-          boxShadow: theme.shadows[3],
-        }}
-      >
-        <YouTube
-          videoId={videoId}
-          opts={opts}
-          onReady={onPlayerReady}
-          style={{
-            position: isSmallScreen ? "absolute" : "static",
-            top: 0,
-            left: 0,
-            width: isSmallScreen ? "100%" : "auto",
-            height: isSmallScreen ? "100%" : "500px",
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "#0b0b0f",
+        background: `
+          radial-gradient(circle at 20% 20%, rgba(255,152,0,0.08), transparent 40%),
+          radial-gradient(circle at 80% 0%, rgba(30,136,229,0.08), transparent 40%)
+        `,
+        color: "#fff",
+        pt: 13,
+        pb: 11,
+      }}
+    >
+      <Container maxWidth="lg">
+        {/* ================= VIDEO PLAYER CARD ================= */}
+        <Box
+          sx={{
+            position: "relative",
+            borderRadius: 3,
+            overflow: "hidden",
+            boxShadow: theme.shadows[5],
+            backgroundColor: "rgba(255,255,255,0.03)",
+            backdropFilter: "blur(12px)",
           }}
-        />
-      </Box>
+        >
+          <YouTube
+            videoId={videoId}
+            opts={opts}
+            onReady={onPlayerReady}
+            style={{
+              width: "100%",
+              height: isSmallScreen ? "220px" : "500px",
+            }}
+          />
+        </Box>
 
-      {/* Navigation Buttons */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          mt: isSmallScreen ? 2 : 3,
-          flexDirection: "row",
-          gap: isSmallScreen ? 1 : 2,
-          width: "100%",
-        }}
-      >
-        {/* Previous Button */}
-        <CustomIconButton
-          to={`/player/${playlistId}/${prevIndex}?videoId=${prevVideoId}`}
-          disabled={parseInt(index) === 0}
-          icon={ArrowBack}
-          isSmallScreen={isSmallScreen}
-          title="Previous Video"
-        />
+        {/* ================= TITLE + BUTTONS GRID ================= */}
+        <Grid
+          container
+          mt={1}
+          spacing={2}
+          direction={isSmallScreen ? "column" : "row"}
+          alignItems={isSmallScreen ? "flex-start" : "center"}
+        >
+          {/* Title takes 2/3 on large screens */}
+          <Grid item xs={12} md={8}>
+            <Box>
+              <Typography
+                variant={isSmallScreen ? "h6" : "h5"}
+                fontWeight={600}
+              >
+                {playlistItems[index]?.title}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                {playlistItems.length} videos in this playlist
+              </Typography>
+            </Box>
+          </Grid>
 
-        {/* Close Video Button */}
-        <CustomIconButton
-          to={`/player/${playlistId}`}
-          icon={Close}
-          isSmallScreen={isSmallScreen}
-          title="Close Video"
-        />
+          {/* Buttons take 1/3 on large screens */}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              display: "flex",
+              justifyContent: isSmallScreen ? "flex-start" : "flex-end",
+              gap: 1,
+              flexWrap: "wrap",
+              mt: isSmallScreen ? 2 : 0,
+            }}
+          >
+            {/* Previous */}
+            <CustomIconButton
+              to={`/player/${playlistId}/${prevIndex}?videoId=${prevVideoId}`}
+              disabled={parseInt(index) === 0}
+              icon={ArrowBack}
+              isSmallScreen={isSmallScreen}
+              title="Previous Video"
+            />
 
-        {/* Next Button */}
-        <CustomIconButton
-          to={`/player/${playlistId}/${nextIndex}?videoId=${nextVideoId}`}
-          disabled={parseInt(index) === lastItem}
-          icon={ArrowForward}
-          isSmallScreen={isSmallScreen}
-          title="Next Video"
-        />
-      </Box>
-    </Container>
+            {/* Go Back / Close CTA */}
+            <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<Close />}
+              onClick={() => navigate(`/player/${playlistId}`)}
+              sx={{
+                textTransform: "none",
+                fontWeight: 600,
+                bgcolor: "#df1923ff",
+                "&:hover": { bgcolor: "#bd0b1aff" },
+              }}
+            >
+              Close
+            </Button>
+
+            {/* Next */}
+            <CustomIconButton
+              to={`/player/${playlistId}/${nextIndex}?videoId=${nextVideoId}`}
+              disabled={parseInt(index) === lastItem}
+              icon={ArrowForward}
+              isSmallScreen={isSmallScreen}
+              title="Next Video"
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 

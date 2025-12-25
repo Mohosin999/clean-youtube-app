@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IconButton } from "@mui/material";
 import { ArrowUpward } from "@mui/icons-material";
 
@@ -37,10 +37,10 @@ const GoToTopButton = () => {
           position: "fixed",
           bottom: 20,
           right: 20,
-          backgroundColor: "#1e88e5",
+          backgroundColor: "#FF9306",
           color: "#fff",
           "&:hover": {
-            backgroundColor: "#1565c0",
+            backgroundColor: "#c97404ff",
           },
         }}
       >

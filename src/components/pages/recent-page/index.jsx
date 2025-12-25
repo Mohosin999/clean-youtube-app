@@ -1,4 +1,3 @@
-import React from "react";
 import { useStoreState } from "easy-peasy";
 import { Container } from "@mui/system";
 import PlaylistCardItem from "../../playlist-card-item";
@@ -19,7 +18,7 @@ const Recents = () => {
         backgroundImage: "url(/bg.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundRepeat: "no-repeat"
       }}
     >
       {/* Overlay */}
@@ -39,7 +38,10 @@ const Recents = () => {
       <Container
         maxWidth="lg"
         sx={{
-          pt: 12,
+          pt: {
+            xs: 14,
+            md: 16,
+          },
           pb: 8,
           minHeight: "100%",
           position: "relative",

@@ -17,13 +17,14 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        background: "#1d1716",
+        background: "#0C0C0F",
         padding: 4,
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 1,
+        borderTop: "1px solid #202024ff",
       }}
     >
       {/* Social Media Section */}
