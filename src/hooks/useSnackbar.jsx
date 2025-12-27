@@ -9,7 +9,8 @@ const useSnackbar = () => {
   const [severity, setSeverity] = useState("success");
 
   // Function to close the Snackbar
-  const handleClose = () => {
+  const handleClose = (_, reason) => {
+    if (reason === "clickaway") return;
     setOpen(false);
   };
 
@@ -17,7 +18,7 @@ const useSnackbar = () => {
    * Triggers the Snackbar to display a message with an optional severity.
    *
    * @param {string} message - The message to display in the Snackbar.
-   * @param {string} [severity='success'] - The severity (type) of the Snackbar. Default is 'success'.
+   * @param {string} [severity='success'] - The severity (type) of the Snackbar.
    */
   const handleSnackbar = (message, severity = "success") => {
     setMessage(message);
@@ -25,10 +26,24 @@ const useSnackbar = () => {
     setOpen(true);
   };
 
-  //  Renders the Snackbar component with the given message and severity.
+  // Renders the Snackbar component (ALWAYS TOP RIGHT)
   const SnackbarComponent = () => {
     return (
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        sx={{
+          position: "fixed",
+          top: 16,
+          right: 16,
+          zIndex: 9999,
+        }}
+      >
         <MuiAlert
           elevation={6}
           variant="filled"

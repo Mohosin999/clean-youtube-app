@@ -2,6 +2,7 @@ import { useStoreState } from "easy-peasy";
 import { Container } from "@mui/system";
 import { Box, Grid, Typography } from "@mui/material";
 import PlaylistCardItem from "../../components/playlist-card-item";
+import { useEffect } from "react";
 
 const Recents = () => {
   const { data } = useStoreState((state) => state.playlists);
@@ -9,6 +10,11 @@ const Recents = () => {
 
   const itemArray = [];
   items.forEach((item) => itemArray.push(data[item]));
+
+  // Scroll to top for every visit
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   return (
     <Box
@@ -38,7 +44,7 @@ const Recents = () => {
       <Container
         maxWidth="lg"
         sx={{
-          pt: { xs: 14, md: 16 },
+          pt: 12,
           pb: 8,
           position: "relative",
           zIndex: 2,

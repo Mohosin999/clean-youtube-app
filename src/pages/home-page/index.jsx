@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStoreState } from "easy-peasy";
 import {
   Box,
@@ -31,6 +31,11 @@ const HomePage = () => {
   // Media Queries
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Scroll to top for every visit
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   const handleCardClick = () => {
     setLoading(true);
