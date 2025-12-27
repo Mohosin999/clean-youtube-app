@@ -1,7 +1,7 @@
 import { useStoreState } from "easy-peasy";
 import { Container } from "@mui/system";
-import PlaylistCardItem from "../../playlist-card-item";
 import { Box, Grid, Typography } from "@mui/material";
+import PlaylistCardItem from "../../components/playlist-card-item";
 
 const Favorites = () => {
   const { data } = useStoreState((state) => state.playlists);

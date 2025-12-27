@@ -14,10 +14,10 @@ import {
 import { Container } from "@mui/system";
 import { Add, PlayCircleFilled, TrendingUp } from "@mui/icons-material";
 
-import PlaylistCardItem from "../../playlist-card-item";
-import GoToTopButton from "../../shared/go-to-top-button";
-import CustomButton from "../../shared/custom-button";
-import PlaylistForm from "../../playlist-form";
+import PlaylistCardItem from "../../components/playlist-card-item";
+import GoToTopButton from "../../components/shared/go-to-top-button";
+import CustomButton from "../../components/shared/custom-button";
+import PlaylistForm from "../../components/playlist-form";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(false);

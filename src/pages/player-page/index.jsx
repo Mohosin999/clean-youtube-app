@@ -13,8 +13,8 @@ import { Container } from "@mui/system";
 import { useParams } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
-import VideoCardItem from "../../video-card-item";
-import GoToTopButton from "../../shared/go-to-top-button";
+import VideoCardItem from "../../components/video-card-item";
+import GoToTopButton from "../../components/shared/go-to-top-button";
 
 const PlayerPage = () => {
   const [searchQuery, setSearchQuery] = useState("");

@@ -17,7 +17,7 @@ Clean YouTube is a user-friendly web application designed to enhance your video-
 
 ## 🚀 Live Demo
 
-[![Project Screenshot](./public/clean-youtube.png)](https://clean-youtube-application.onrender.com/)
+[![Project Screenshot](./public/clean-youtube.png)](https://clean-youtube-app.vercel.app/)
 
 ## ✨ Features
 
