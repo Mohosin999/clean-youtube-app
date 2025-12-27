@@ -35,12 +35,12 @@ const useSnackbar = () => {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: "left",
         }}
         sx={{
           position: "fixed",
           top: 16,
-          right: 16,
+          left: 16,
           zIndex: 9999,
         }}
       >

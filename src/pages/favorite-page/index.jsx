@@ -54,19 +54,7 @@ const Favorites = () => {
           <Grid container spacing={3}>
             {itemArray.map((item) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={item.playlistId}>
-                <Box
-                  sx={{
-                    borderRadius: 3,
-                    overflow: "hidden",
-                    background: "rgba(255,255,255,0.03)",
-                    backdropFilter: "blur(12px)",
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                    "&:hover": {
-                      transform: "translateY(-5px)",
-                      boxShadow: "0 12px 24px rgba(0,0,0,0.4)",
-                    },
-                  }}
-                >
+                <Box>
                   <PlaylistCardItem
                     playlistId={item.playlistId}
                     playlistThumbnail={item.playlistItems[0]?.thumbnails}
