@@ -1,11 +1,18 @@
 import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 
-const CustomButton = ({ text, icon: Icon, variant = "primary", ...props }) => {
+const CustomButton = ({
+  text,
+  icon: Icon,
+  variant = "primary",
+  onClick,
+  ...props
+}) => {
   return (
     <Button
       {...props}
       startIcon={Icon ? <Icon fontSize="small" /> : null}
+      onClick={onClick ? onClick : undefined}
       sx={{
         textTransform: "none",
         fontWeight: 500,
@@ -50,6 +57,7 @@ CustomButton.propTypes = {
   text: PropTypes.string.isRequired,
   icon: PropTypes.elementType,
   variant: PropTypes.oneOf(["primary", "ghost", "outline"]),
+  onClick: PropTypes.func,
 };
 
 export default CustomButton;

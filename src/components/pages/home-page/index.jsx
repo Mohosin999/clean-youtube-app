@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useStoreState } from "easy-peasy";
 import {
   Box,
@@ -8,6 +8,8 @@ import {
   Divider,
   Stack,
   Chip,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { Add, PlayCircleFilled, TrendingUp } from "@mui/icons-material";
@@ -21,12 +23,25 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const playlistRef = useRef(null);
+
   const { data } = useStoreState((state) => state.playlists);
   const playlistArray = Object.values(data);
+
+  // Media Queries
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleCardClick = () => {
     setLoading(true);
     setTimeout(() => setLoading(false), 400);
+  };
+
+  const handleScroll = () => {
+    playlistRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
@@ -115,8 +130,9 @@ const HomePage = () => {
                 />
                 <CustomButton
                   icon={PlayCircleFilled}
-                  text="Explore"
+                  text="Explore Playlists"
                   variant="outline"
+                  onClick={handleScroll}
                   sx={{ width: { xs: "100%", sm: "auto" } }}
                 />
               </Stack>
@@ -153,7 +169,7 @@ const HomePage = () => {
       </Box>
 
       {/* ================= PLAYLIST SECTION ================= */}
-      <Container maxWidth="lg" sx={{ py: 10 }}>
+      <Container maxWidth="lg" ref={playlistRef} sx={{ py: 10 }}>
         <Typography
           variant="h4"
           fontWeight="bold"
@@ -208,7 +224,7 @@ const HomePage = () => {
 
         <Divider sx={{ mb: 6, borderColor: "rgba(255,255,255,0.1)" }} />
 
-        <Grid container spacing={4}>
+        <Grid container spacing={isSmallScreen ? 2 : 4}>
           {[
             {
               title: "Ads-Free Videos",
