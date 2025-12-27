@@ -25,9 +25,9 @@ const CustomIconButton = ({
 }) => {
   // Default styles for the IconButton
   const defaultStyles = {
-    backgroundColor: "#004445",
+    backgroundColor: "#0684aaff",
     color: "fff",
-    "&:hover": { backgroundColor: "#081f37" },
+    "&:hover": { backgroundColor: "#0ba5e2ff" },
     "&:disabled": { backgroundColor: "#666" },
     width: isSmallScreen ? "32px" : "42px",
     height: isSmallScreen ? "32px" : "42px",
