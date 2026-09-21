@@ -1,4 +1,4 @@
-# Clean Youtube Project
+# Clean YouTube
 
 ## 📚 Table of Contents
 
@@ -13,7 +13,7 @@
 
 ## 📝 Description
 
-Clean YouTube is a user-friendly web application designed to enhance your video-watching experience on YouTube. By providing a clean and distraction-free interface, it ensures that users can focus solely on their selected videos without interruptions from ads or cluttered layouts. Users can manage playlists, keep track of recently visited playlists, and save their favorites, all while enjoying a seamless and enjoyable experience.
+Clean YouTube is a distraction-free YouTube experience for focused learning. Save any **playlist or single video** and watch it in a clean, ad-free player — no shorts, no recommendations, no clutter. Your library (playlists + videos) lives locally in the browser, with separate pages for Playlists and Videos, plus Favorites and Recents.
 
 ## 🚀 Live Demo
 
@@ -23,56 +23,71 @@ Clean YouTube is a user-friendly web application designed to enhance your video-
 
 #### `Add Playlists by ID, URL, or Search`
 
-- Users can quickly add a playlist by pasting its YouTube URL or Playlist ID.
-- Users can also search directly within the app to find and add their own playlists.
+- Paste any YouTube playlist URL (`playlist?list=PL...`) or Playlist ID.
+- Search YouTube for playlists directly from the app (`Search` in Add dialog).
+
+#### `Add Single Videos`
+
+- Paste any single video link — `watch?v=`, `youtu.be/`, `shorts/`, `embed/` or raw `11-char ID`.
+- Video metadata (title, thumbnail, channel) is fetched via `youtube/v3/videos` and stored locally.
+- Dedicated **Videos** library at `/videos` — same clean card layout as Playlists, but without search.
+
+#### `Separate Libraries`
+
+- **Home `/`** — editorial landing (no library), intro + benefits.
+- **Playlists `/playlists`** — searchable grid of all saved playlists (sticky Search bar).
+- **Videos `/videos`** — grid of single videos (no search, intentional plain view).
+
+#### `Watch Experience`
+
+- **Playlist Player `/player/:playlistId`** — left info + search inside playlist, featured 2 videos + All Videos grid, ad-free.
+- **Playlist Video `/player/:playlistId/:index?videoId=`** — YouTube player with progress bar, Previous/Next/Close, Up Next queue.
+- **Single Video `/watch/:videoId`** — single ad-free player with channel, date, description, favorite toggle, Back to Videos / Open on YouTube.
 
 #### `Favorites Management`
 
-- Add frequently watched playlists to a favorites section for quick access.
-- Remove playlists from favorites as needed.
+- Heart any **playlist or single video** — Videos, Playlist cards, and Watch/Player pages all have the heart.
+- Favorites page `/favorites` shows **Playlists + Videos in two sections** (counts in header).
 
 #### `Recent Playlist Tracking`
 
-- Automatically tracks and displays recently accessed playlists and videos for easy revisiting.
+- Opening a playlist adds it to Recents (max 8, most recent first).
+- Recents page `/recents` — same spacing/design as Favorites (`pt:4`, `bg #09090B`).
 
-#### `Permanent Playlist Deletion`
+#### `Permanent Deletion`
 
-- Remove unwanted playlists permanently to keep your library organized and clutter-free.
+- Delete playlists from Playlists grid (also clears from Favorites/Recents).
+- Delete single videos from Videos grid (also clears from Favorites). No backend — localStorage only.
 
-#### `Live Video Search`
+#### `Live Search`
 
-- Users can search in real-time within a playlist to quickly find a specific video
+- In Playlists library: realtime filter by title/channel.
+- Inside a playlist: instant filter videos by title.
 
 ## 💬 Benefits
 
-- No ads while watching videos, ensuring an uninterrupted viewing experience.
-- Distraction-free environment tailored for focused video consumption.
-- Efficient playlist management with favorites and recent tracking.
-- Simple yet powerful controls for adding, managing, and removing playlists.
+- No ads while watching — playlists and single videos.
+- Zero distractions: no shorts, no recommendations, no autoplay traps.
+- Playlist **and** single video support — save a full course or just one talk.
+- Favorite + Recent + ad-free study mode for deep work.
+- 100% local — no login, no tracking, instant.
 
 ## 🛠️ Tech Stack
 
-- React 18
-- JavaScript
-- React Router DOM
+- React 18 + Vite 5
+- React Router DOM 7
 - React YouTube
-- YouTube Data API
-- Material UI
-- EasyPeasy
-- Axios
-- PropTypes
+- YouTube Data API v3 (`playlists`, `playlistItems`, `videos`, `search`)
+- Material UI 6 + Emotion
+- EasyPeasy (persist + localStorage) — `playlists`, `videos`, `favorites`, `recents`
+- Axios, Framer Motion, PropTypes
 
 ## ⚙️ Setup and Installation
 
-### Step-by-step instructions for cloning and running locally:
-
 ```
 ✅ git clone https://github.com/Mohosin999/Clean-YouTube-App.git
-
 ✅ cd Clean-YouTube-App
-
 ✅ yarn install
-
 ✅ yarn dev
 ```
 
@@ -82,9 +97,11 @@ Clean YouTube is a user-friendly web application designed to enhance your video-
 http://localhost:5173
 ```
 
+Routes: `/` (Home) • `/playlists` • `/videos` • `/watch/:videoId` • `/player/:playlistId` • `/favorites` • `/recents`
+
 ## 🔑 Environment Variables
 
-Create a `.env` file in the root directory of the project and add the following variable:
+Create a `.env` file in the root and add:
 
 ```
 VITE_YOUTUBE_API_KEY=
@@ -95,5 +112,5 @@ VITE_YOUTUBE_API_KEY=
 👤 **Mohosin Hasan Akash**
 
 - 💼 **LinkedIn:** [linkedin.com/in/mohosinh99/](https://www.linkedin.com/in/mohosinh99/)
-- 🌐 **Portfolio:** [personal-portfolio.com](https://personal-portfolio-website-brown-nine.vercel.app/)
+- 🌐 **Portfolio:** [personal-portfolio.com](https://mohosin-hasan-akash.vercel.app/)
 - 📧 **Email:** mohosin.hasan.akash@gmail.com
