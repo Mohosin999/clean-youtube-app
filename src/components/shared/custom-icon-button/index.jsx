@@ -2,55 +2,25 @@ import PropTypes from "prop-types";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 
-/**
- * CustomIconButton Component
- * A reusable and customizable IconButton component for navigation with added styles and features.
- *
- * @param {string} to - The navigation path for the button.
- * @param {boolean} disabled - Whether the button is disabled. Defaults to `false`.
- * @param {string} size - The size of the button. Defaults to `"medium"`.
- * @param {React.ElementType} icon - The icon component to render inside the button.
- * @param {boolean} isSmallScreen - Indicates if the screen is small to adjust styles accordingly.
- * @param {object} additionalStyles - Additional styles to merge with default styles.
- * @param {string} title - Tooltip or title text for the button.
- */
-const CustomIconButton = ({
-  to,
-  disabled = false,
-  size = "medium",
-  icon: Icon,
-  isSmallScreen,
-  additionalStyles = {},
-  title,
-}) => {
-  // Default styles for the IconButton
+const CustomIconButton = ({ to, disabled = false, size = "medium", icon: Icon, isSmallScreen, additionalStyles = {}, title }) => {
   const defaultStyles = {
-    backgroundColor: "#0684aaff",
-    color: "fff",
-    "&:hover": { backgroundColor: "#0ba5e2ff" },
-    "&:disabled": { backgroundColor: "#666" },
-    width: isSmallScreen ? "32px" : "42px",
-    height: isSmallScreen ? "32px" : "42px",
+    background: "linear-gradient(135deg,#3B82F6,#06B6D4)",
+    color: "#fff",
+    boxShadow: "0 4px 14px rgba(59,130,246,0.3)",
+    "&:hover": { background: "linear-gradient(135deg,#2563EB,#0891B2)", transform: "translateY(-1px)" },
+    "&:disabled": { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)", boxShadow: "none" },
+    width: isSmallScreen ? 36 : 44,
+    height: isSmallScreen ? 36 : 44,
+    border: "1px solid rgba(255,255,255,0.08)",
+    transition: "all 0.2s",
   };
-
   return (
-    <IconButton
-      to={to}
-      component={Link}
-      disabled={disabled}
-      size={isSmallScreen ? "small" : size}
-      title={title}
-      sx={{ ...defaultStyles, ...additionalStyles }}
-    >
-      <Icon
-        fontSize={isSmallScreen ? "small" : "medium"}
-        sx={{ color: "#fff" }}
-      />
+    <IconButton to={to} component={Link} disabled={disabled} size={isSmallScreen ? "small" : size} title={title} sx={{ ...defaultStyles, ...additionalStyles }}>
+      <Icon fontSize={isSmallScreen ? "small" : "medium"} sx={{ color: "#fff" }} />
     </IconButton>
   );
 };
 
-// Prop validation using PropTypes
 CustomIconButton.propTypes = {
   to: PropTypes.string.isRequired,
   disabled: PropTypes.bool,

@@ -1,103 +1,56 @@
-import React from "react";
 import PropTypes from "prop-types";
-import { Stack } from "@mui/system";
+import { Stack, Tooltip, IconButton as MuiIconButton } from "@mui/material";
 import { useStoreActions } from "easy-peasy";
 import DeleteWithConfirm from "../delete-confirmation";
-import { Favorite } from "@mui/icons-material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 
-/**
- * IconButton Component
- * Renders favorite and delete buttons based on the page context.
- * Supports "home", "favorites", and "recents" paths.
- *
- * @param {string} id - The unique ID of the playlist.
- * @param {string} path - The current page path ("home", "favorites", or "recents").
- * @param {boolean} isFavorite - Indicates whether the playlist is marked as a favorite.
- */
 const IconButton = ({ id, path, isFavorite }) => {
-  // Easy-Peasy actions for handling favorites, recent items, and playlists
-  const { addToFavorite, removeFromFavorite } = useStoreActions(
-    (actions) => actions.favorites
+  const { addToFavorite, removeFromFavorite } = useStoreActions((a) => a.favorites);
+  const { removeFromRecent } = useStoreActions((a) => a.recents);
+  const { removePlaylist } = useStoreActions((a) => a.playlists);
+
+  const handleFav = () => (isFavorite ? removeFromFavorite(id) : addToFavorite(id));
+  const handleDelete = (pid) => {
+    removePlaylist(pid);
+    removeFromFavorite(pid);
+    removeFromRecent(pid);
+  };
+
+  const favBtn = (
+    <Tooltip title={isFavorite ? "Remove favorite" : "Add favorite"} arrow>
+      <MuiIconButton
+        onClick={handleFav}
+        size="small"
+        sx={{
+          width: 28,
+          height: 28,
+          borderRadius: "8px",
+          bgcolor: isFavorite ? "#18181B" : "transparent",
+          border: "1px solid",
+          borderColor: isFavorite ? "#27272A" : "transparent",
+          color: isFavorite ? "#DC2626" : "#71717A",
+          "&:hover": { bgcolor: "#18181B", color: isFavorite ? "#DC2626" : "#FAFAFA" },
+        }}
+      >
+        {isFavorite ? <Favorite sx={{ fontSize: 14 }} /> : <FavoriteBorder sx={{ fontSize: 14 }} />}
+      </MuiIconButton>
+    </Tooltip>
   );
-  const { removeFromRecent } = useStoreActions((actions) => actions.recents);
-  const { removePlaylist } = useStoreActions((actions) => actions.playlists);
-
-  /**
-   * Handles favorite actions.
-   * Adds or removes the playlist from favorites based on its current state.
-   */
-  const handleFavoriteActions = () => {
-    if (isFavorite) {
-      removeFromFavorite(id);
-    } else {
-      addToFavorite(id);
-    }
-  };
-
-  /**
-   * Deletes the playlist and removes it from favorites and recent items.
-   *
-   * @param {string} id - The ID of the playlist to be deleted.
-   */
-  const handleDeletePlaylist = (id) => {
-    removePlaylist(id);
-    removeFromFavorite(id);
-    removeFromRecent(id);
-  };
 
   return (
-    <div>
+    <>
       {path === "home" && (
-        <Stack direction={"row"} sx={{ marginLeft: "auto" }}>
-          <Favorite
-            titleAccess={
-              isFavorite ? "Remove from Favorite" : "Add to Favorite"
-            }
-            onClick={handleFavoriteActions}
-            sx={{
-              cursor: "pointer",
-              marginLeft: "0.8rem",
-              color: "#fff",
-              fill: isFavorite ? "#fff" : "none", // Conditional fill color
-              stroke: "#fff", // Optional: outline stroke color
-            }}
-          />
-
-          <DeleteWithConfirm
-            title={"Delete Playlist"}
-            confirmTitle={"Delete⚠️"}
-            message={"Are you sure you want to delete this playlist?"}
-            onConfirm={() => handleDeletePlaylist(id)}
-          />
+        <Stack direction="row" spacing={0.4} alignItems="center">
+          {favBtn}
+          <DeleteWithConfirm title="Delete playlist" confirmTitle="Delete playlist?" message="This will remove the playlist from your library. You can add it again with the same link." onConfirm={() => handleDelete(id)} />
         </Stack>
       )}
-
-      {/* This logic for favoritepage button */}
-      {path === "favorites" && (
-        <Stack direction={"row"} sx={{ marginLeft: "auto" }}>
-          <Favorite
-            titleAccess={
-              isFavorite ? "Remove from Favorite" : "Add to Favorite"
-            }
-            onClick={handleFavoriteActions}
-            sx={{
-              cursor: "pointer",
-              marginLeft: "0.8rem",
-              color: "#fff",
-              fill: isFavorite ? "#fff" : "none",
-              stroke: "#fff",
-            }}
-          />
-        </Stack>
-      )}
-
-      {/* This logic for recentpage button */}
+      {path === "favorites" && <Stack direction="row">{favBtn}</Stack>}
       {path === "recents" && null}
-    </div>
+    </>
   );
 };
 
-// Prop validation using PropTypes
 IconButton.propTypes = {
   id: PropTypes.string.isRequired,
   path: PropTypes.oneOf(["home", "favorites", "recents"]).isRequired,
