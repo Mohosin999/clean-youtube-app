@@ -36,8 +36,7 @@ const PlayerPage = () => {
 
   return (
     <Box sx={{ minHeight: "100vh", pb: "60px", color: "#fff", background: "#09090B", position: "relative" }}>
-
-      <Container maxWidth="xl" sx={{ pt: { xs: 11, md: 10 }, position: "relative", zIndex: 1, px: { xs: 2, md: 3 } }}>
+      <Container maxWidth="xl" sx={{ pt: 4, position: "relative", zIndex: 1, px: { xs: 2, md: 3 } }}>
         {/* HEADER */}
         <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: { xs: 2.5, lg: 4 }, mb: 4 }}>
           <Box sx={{ flex: { lg: "0 0 360px" }, minWidth: 0 }}>

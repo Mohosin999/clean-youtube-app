@@ -28,8 +28,8 @@ const WatchPage = () => {
   }
   const opts = { playerVars: { autoplay: 1 }, width: "100%", height: "100%" };
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "#09090B", color: "#fff", pt: { xs: 7, md: 8 }, pb: 6 }}>
-      <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: "#09090B", color: "#fff", pb: 6 }}>
+      <Container maxWidth="xl" sx={{ pt: 4, px: { xs: 2, md: 3 } }}>
         <Box sx={{ borderRadius: { xs: 0, md: "12px" }, overflow: "hidden", bgcolor: "#000", border: { xs: "none", md: "1px solid #27272A" } }}>
           <Box sx={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
             <Box sx={{ position: "absolute", inset: 0 }}><YouTube videoId={videoId} opts={opts} style={{ width: "100%", height: "100%" }} /></Box>

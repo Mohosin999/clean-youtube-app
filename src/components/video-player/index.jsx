@@ -56,13 +56,13 @@ const VideoPlayer = () => {
   );
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "#09090B", color: "#fff", pt: { xs: 8, md: 9 }, pb: 6 }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: "#09090B", color: "#fff", pb: 6 }}>
       {/* Progress bar */}
       <Box sx={{ position: "fixed", top: { xs: 56, md: 64 }, left: 0, right: 0, height: 2, bgcolor: "#27272A", zIndex: 10 }}>
         <Box sx={{ height: "100%", width: `${progress}%`, bgcolor: "#DC2626", transition: "width 0.4s ease" }} />
       </Box>
 
-      <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } }}>
+      <Container maxWidth="xl" sx={{ pt: 4, px: { xs: 2, md: 3 } }}>
         {/* Player */}
         <Box
           sx={{
