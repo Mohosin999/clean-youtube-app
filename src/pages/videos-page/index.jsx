@@ -68,21 +68,7 @@ const VideosPage = () => {
 
   return (
     <Box sx={{ bgcolor: "#09090B", color: "#fff", minHeight: "100vh" }}>
-      <Box sx={{ borderBottom: "1px solid #18181B", bgcolor: "#09090B", position: "sticky", top: { xs: 56, md: 64 }, zIndex: 5 }}>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 3 }, py: 3 }}>
-          <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" gap={2} alignItems={{ xs: "flex-start", md: "center" }}>
-            <Box>
-              <Typography sx={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: { xs: "1.6rem", md: "1.8rem" }, letterSpacing: "-0.02em", lineHeight: 1 }}>
-                Your Videos
-              </Typography>
-              <Typography sx={{ color: "#71717A", fontSize: "0.875rem", mt: 0.6 }}>
-                {list.length} videos • Saved locally
-              </Typography>
-            </Box>
-            <CustomButton icon={Add} text="Add Video" onClick={() => setOpen(true)} />
-          </Stack>
-        </Container>
-      </Box>
+      
 
       <Container maxWidth="xl" sx={{ px: { xs: 2, md: 3 }, py: 4 }}>
         {list.length > 0 ? (
