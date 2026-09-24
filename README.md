@@ -112,5 +112,5 @@ VITE_YOUTUBE_API_KEY=
 👤 **Mohosin Hasan Akash**
 
 - 💼 **LinkedIn:** [linkedin.com/in/mohosinh99/](https://www.linkedin.com/in/mohosinh99/)
-- 🌐 **Portfolio:** [personal-portfolio.com](https://mohosin-hasan-akash.vercel.app/)
+- 🌐 **Portfolio:** [personal-portfolio.com](https://mohosin.vercel.app/)
 - 📧 **Email:** mohosin.hasan.akash@gmail.com
